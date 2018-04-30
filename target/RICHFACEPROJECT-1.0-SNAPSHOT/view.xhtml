@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head>
+        <title>View Page</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <rich:dataTable value="#{employeeBean.list}" var="emp" rows="5" filterVar="filterValue">
+                <f:facet name="caption">
+                    <h:outputText value="Employee Details" />
+                </f:facet>
+                <f:facet name="header">
+                    <h:outputText value="Details of employee" />
+                </f:facet>
+                <rich:column>
+                    <f:facet name="header">Sn</f:facet>
+                    <h:outputText value="#{table.rowIndex + 1}" />
+                </rich:column>
+
+                <rich:column  sortBy="#{emp.id}" filterValue="#{employeeFilter.idFilter}"
+                              filterExpression="#{empty filterValue or fn:startsWith(emp.id, filterValue)}">
+                    <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="Employee ID "/>
+                        </h:panelGroup>
+                    </f:facet>
+                    <h:outputText value="#{emp.id}"/>
+                </rich:column>
+
+                <rich:column filterValue="#{employeeFilter.nameFilter}"
+                             filterExpression="#{empty filterValue or fn:startsWith(emp.name, filterValue)}">
+                    <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="Employee Name "/>
+                        </h:panelGroup>
+                    </f:facet>
+                    <h:outputText value="#{emp.name}"/>
+                </rich:column>
+
+                <rich:column filterValue="#{employeeFilter.addressFilter}"
+                             filterExpression="#{empty filterValue or fn:startsWith(emp.address, filterValue)}">
+                    <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="Address "/>
+                        </h:panelGroup>
+                    </f:facet>
+                    <h:outputText value="#{emp.address}"/>
+                </rich:column>
+
+                <rich:column filterValue="#{employeeFilter.emailFilter}"
+                             filterExpression="#{empty filterValue or fn:startsWith(emp.email, filterValue)}">
+                    <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="Email"/>
+                        </h:panelGroup>
+                    </f:facet>
+                    <h:outputText value="#{emp.email}"/>
+                </rich:column>
+
+                <rich:column filterValue="#{employeeFilter.mobileFilter}"
+                             filterExpression="#{empty filterValue or fn:startsWith(emp.mobile, filterValue)}">
+                    <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="Mobile"/>
+                        </h:panelGroup>
+                    </f:facet>
+                    <h:outputText value="#{emp.mobile}"/>
+                </rich:column>
+
+                <rich:column filterValue="#{employeeFilter.expertiseFilter}"
+                             filterExpression="#{empty filterValue or fn:startsWith(emp.expertise, filterValue)}">
+                    <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="Expertise"/>
+                        </h:panelGroup>
+                    </f:facet>
+                    <h:outputText value="#{emp.expertise}"/>
+                </rich:column>
+
+                <rich:column filterValue="#{employeeFilter.subExpertiseFilter}"
+                             filterExpression="#{empty filterValue or fn:startsWith(emp.expertise, filterValue)}">
+                    <f:facet name="header">Sub Expertise</f:facet>
+                    <h:outputText value="#{emp.subExpertise}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Action</f:facet>
+                    <a4j:commandButton value="Edit" action="#{employeeBean.editEmployee(emp)}" />
+                    <a4j:commandButton value="Delete">
+                        <rich:componentControl target="popupDel" operation="show" />
+                    </a4j:commandButton>
+                    <rich:popupPanel id="popupDel" modal="false" autosized="true" resizeable="false">
+                        <f:facet name="header">
+                            <h:outputText value="DELETE"/>
+                        </f:facet>
+
+                        <h:outputText value="Are you sure you want to delete"/><br/>
+                        Reason: <h:inputText value="#{employeeBean.delEmp.reason}"/><br/>
+                        <h:commandButton value="Ok" action="#{employeeBean.deleteEmployee(emp)}" onclick="#{rich:component('popupDel')}.hide()" >
+                            <f:setPropertyActionListener target="#{employeeBean.reason1}" value="#{employeeBean.delEmp.reason}" />
+                        </h:commandButton>
+                    </rich:popupPanel>
+                </rich:column>
+            </rich:dataTable>
+
+            <rich:panel>
+                <h:commandButton value="Add New Employee" action="add"/>
+            </rich:panel>
+
+            <rich:dataTable id="per" rendered="#{not empty employeeBean.deletedList}" value="#{employeeBean.deletedList}" var="delEmp">
+                <f:facet name="caption">
+                    <h:outputText value="DELETED EMPLOYEE" />
+                </f:facet>
+                <f:facet name="header">
+                    <h:outputText value="Details of deleted employee" />
+                </f:facet>
+                <rich:column>
+                    <f:facet name="header">Sn</f:facet>
+                    <h:outputText value="#{table.rowIndex + 1}" />
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Employee Id</f:facet>
+                    <h:outputText value="#{delEmp.employee.id}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Employee Name</f:facet>
+                    <h:outputText value="#{delEmp.employee.name}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Address</f:facet>
+                    <h:outputText value="#{delEmp.employee.address}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Email</f:facet>
+                    <h:outputText value="#{delEmp.employee.email}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Mobile</f:facet>
+                    <h:outputText value="#{delEmp.employee.mobile}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Expertise</f:facet>
+                    <h:outputText value="#{delEmp.employee.expertise}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Sub Expertise</f:facet>
+                    <h:outputText value="#{delEmp.employee.subExpertise}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Reasons</f:facet>
+                    <h:outputText value="#{delEmp.reason}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Action</f:facet>
+                    <a4j:commandButton value="Delete Permanently" action="#{employeeBean.delete(delEmp)}" />
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+    </h:body>
+</html>
+

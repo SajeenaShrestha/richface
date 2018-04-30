@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Add Page</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <rich:graphValidator value="#{employeeBean.emp}" id="empbean">
+                <rich:panel header="Edit Employee" style="width:400px">
+                    <rich:messages for="empbean" />
+                    <rich:messages globalOnly="true" />
+                    <h:panelGrid columns="3">
+
+                        <h:outputText value="Id:" />
+                        <h:inputText value="#{employeeBean.emp.id}" id="id-id" required="true" requiredMessage="Please enter id" />
+                        <rich:message for="id-id" style="color: red;"/>
+
+                        <h:outputText value="Employee name:" />
+                        <h:inputText value="#{employeeBean.emp.name}" id="name-id" required="true" requiredMessage="Please enter name" />
+                        <rich:message for="name-id" style="color: red;"/>
+
+                        <h:outputText value="Address:" />
+                        <h:inputText value="#{employeeBean.emp.address}" id="address-id" required="true" requiredMessage="Please enter Address"/>
+                        <rich:message for="address-id" style="color:red;"/>
+
+                        <h:outputText value="Email:" />
+                        <h:inputText value="#{employeeBean.emp.email}" id="email-id" required="true" validatorMessage="Please enter Valid Email">
+                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </h:inputText>
+                        <rich:message for="email-id" style="color: red;"/>
+
+                        <h:outputText value="Mobile:" />
+                        <h:inputText value="#{employeeBean.emp.mobile}" id="mobile-id" required="true" validatorMessage="Please enter mobile number">
+                            <f:validateLength for="mobile" minimum="10" maximum="10"/>
+                            <f:validateRequired/>
+                        </h:inputText>    
+                        <rich:message for="mobile-id" style="color:red;"/>
+
+                        <h:panelGroup id="expertiseDropDown">
+                            Expertise:
+                            <h:selectOneMenu id="expertise-id"  value="#{employeeBean.emp.expertise}" validatorMessage="Expertise is required">
+                                <f:selectItem itemLabel="Select One" itemValue="No Expertise selected" />
+                                <f:selectItems value="#{employeeBean.emp.selectItemValue}" />
+                                <f:ajax render="expertiseDropDown"></f:ajax>
+                            </h:selectOneMenu>
+
+
+                            <h:panelGroup id="java" rendered="#{employeeBean.emp.expertise=='java'}">
+                                <a4j:commandButton value="JavaOptions">
+                                    <rich:componentControl target="popupJava" operation="show" />
+                                </a4j:commandButton>
+                                <rich:popupPanel id="popupJava" modal="false" autosized="true" resizeable="false">
+                                    <f:facet name="header">
+                                        <h:outputText value="JAVA TYPES"/>
+                                    </f:facet>
+                                    <h:selectManyCheckbox value="#{employeeBean.emp.subExpertise}">
+                                        <f:selectItems value="#{employeeBean.emp.subExpertiseJava}"/>
+                                    </h:selectManyCheckbox>
+                                    <h:commandButton value="Ok" onclick="#{rich:component('popupJava')}.hide()" />
+                                </rich:popupPanel>
+                            </h:panelGroup>
+
+                            <h:panelGroup id="python" rendered="#{employeeBean.emp.expertise=='python'}">
+                                <a4j:commandButton value="pythonOptions">
+                                    <rich:componentControl target="popupPython" operation="show" />
+                                </a4j:commandButton>
+                                <rich:popupPanel id="popupPython" modal="false" autosized="true" resizeable="false">
+                                    <f:facet name="header">
+                                        <h:outputText value="PYTHON TYPES"/>
+                                    </f:facet>
+                                    <h:selectManyCheckbox value="#{employeeBean.emp.subExpertise}">
+                                        <f:selectItems value="#{employeeBean.emp.subExpertisePython}"/>
+                                    </h:selectManyCheckbox>
+                                    <h:commandButton value="Ok" onclick="#{rich:component('popupPython')}.hide()" />
+                                </rich:popupPanel>
+                            </h:panelGroup>
+
+                            <h:panelGroup id="css" rendered="#{employeeBean.emp.expertise=='css'}">
+                                <a4j:commandButton value="CssOptions">-->
+                                    <rich:componentControl target="popupCss" operation="show" />
+                                </a4j:commandButton>
+                                <rich:popupPanel id="popupCss" modal="false" autosized="true" resizeable="false">
+                                    <f:facet name="header">
+                                        <h:outputText value="CSS TYPES"/>
+                                    </f:facet>
+                                    <h:selectManyCheckbox value="#{employeeBean.emp.subExpertise}">
+                                        <f:selectItems value="#{employeeBean.emp.subExpertiseCss}"/>
+                                    </h:selectManyCheckbox>
+                                    <h:commandButton value="Ok" onclick="#{rich:component('popupCss')}.hide()" />
+                                </rich:popupPanel>
+                            </h:panelGroup>
+
+                            <h:panelGroup id="php" rendered="#{employeeBean.emp.expertise=='php'}">
+                                <a4j:commandButton value="PhpOptions">
+                                    <rich:componentControl target="popupPhp" operation="show" />
+                                </a4j:commandButton>
+                                <rich:popupPanel id="popupPhp" modal="false" autosized="true" resizeable="false">
+                                    <f:facet name="header">
+                                        <h:outputText value="PHP TYPES"/>
+                                    </f:facet>
+                                    <h:selectManyCheckbox value="#{employeeBean.emp.subExpertise}">
+                                        <f:selectItems value="#{employeeBean.emp.subExpertisephp}"/>
+                                    </h:selectManyCheckbox>
+                                    <h:commandButton value="Ok" onclick="#{rich:component('popupPhp')}.hide()" />
+                                </rich:popupPanel>
+                            </h:panelGroup>
+
+                        </h:panelGroup>   
+
+                    </h:panelGrid>
+                    <a4j:commandButton value="Update" action="#{employeeBean.saveEditEmployee()}" />
+                </rich:panel>
+            </rich:graphValidator>
+        </h:form>
+    </h:body>
+</html>

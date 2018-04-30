@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>RichFaceDialog Page</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <rich:popupPanel modal="true" height="#{popupHeight}" resizeable="#{popupResizable}" onmaskclick="#{componentCallToId}.hide(); return false;" id="#{popupId}">
+                <f:facet name="header">
+                    <h:outputText value="#{popupHeaderText}" />
+                </f:facet>
+                <f:facet name="controls">
+                    <h:outputLink value="#" onclick="#{componentCallToId}.hide(); return false;">
+                        <h:outputText value="X" />
+                    </h:outputLink>
+                </f:facet>
+                <p>#{popupSubject}</p>
+                <p>
+                    <h:inputText value="#{inputTextBean[inputTextProperty]}" styleClass="full-width" id="#{inputTextId}" />
+                </p>
+                <h:panelGrid columns="2" style="margin: 0 auto;">
+                    <h:commandButton value="OK" action="#{acceptButtonBean[acceptButtonMethod](acceptButtonMethodArg)}" onclick="#{componentCallToId}.hide(); return true;">
+                        <a4j:ajax execute="@this #{inputTextId}" render="@form" />
+                    </h:commandButton>
+                    <h:commandButton value="Cancel" onclick="#{componentCallToId}.hide(); return false;" immediate="true" />
+                </h:panelGrid>
+            </rich:popupPanel>
+        </h:form>
+    </h:body>
+</html>
+
